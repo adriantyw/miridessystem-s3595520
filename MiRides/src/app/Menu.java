@@ -4,7 +4,12 @@ import java.util.Scanner;
 import utilities.DateTime;
 import utilities.DateUtilities;
 
-
+/*
+ * Class:		Menu
+ * Description:	The class a menu and is used to interact with the user. 
+ * Author:		Rodney Cocker
+ * 
+ */
 public class Menu
 {
 	private Scanner console = new Scanner(System.in);
