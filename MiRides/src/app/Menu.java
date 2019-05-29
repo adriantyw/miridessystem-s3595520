@@ -1,6 +1,8 @@
 package app;
 
 import java.util.Scanner;
+import java.util.StringTokenizer;
+
 import utilities.DateTime;
 import utilities.DateUtilities;
 
@@ -78,8 +80,10 @@ public class Menu
 	 */
 	private void createCar()
 	{
-		String id = "", make, model, driverName;
+		String id = "", make, model, driverName, service;
 		int numPassengers = 0;
+		double fee = 0.0;
+		String[] refreshments = null;
 
 		System.out.print("Enter registration number: ");
 		id = promptUserForRegNo();
@@ -97,6 +101,35 @@ public class Menu
 
 			System.out.print("Enter number of passengers: ");
 			numPassengers = promptForPassengerNumbers();
+			
+			System.out.print("Enter Service Type (SD/SS)");
+			service = console.nextLine();
+			
+			if (service == "SS")
+			{
+				System.out.print("Enter Standard Fee: ");
+				fee = console.nextDouble();
+				
+				System.out.print("Enter List of Refreshments:");
+				String refreshmentsstring = console.nextLine();
+				StringTokenizer tokenizer = new StringTokenizer(refreshmentsstring, ",");
+				
+				for (int i=0 ; i <= tokenizer.countTokens(); i++ ) {
+		            refreshments[i] = tokenizer.nextToken();
+		        }   
+				
+				boolean result = application.checkIfCarExists(id);
+
+				if (!result)
+				{
+					String carRegistrationNumber = application.createSilverServiceCar(id, make, model, driverName, numPassengers, fee, refreshments);
+					System.out.println(carRegistrationNumber);
+				} else
+				{
+					System.out.println("Error - Already exists in the system");
+				}
+				
+			}
 
 			boolean result = application.checkIfCarExists(id);
 

@@ -3,7 +3,7 @@ package cars;
 import utilities.DateTime;
 import utilities.DateUtilities;
 
-class SilverService extends Car
+public class SilverService extends Car
 {
 
 
