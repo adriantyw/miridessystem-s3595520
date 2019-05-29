@@ -14,23 +14,24 @@ import utilities.MiRidesUtilities;
 public class Car
 {
 	// Car attributes
-	private String regNo;
-	private String make;
-	private String model;
-	private String driverName;
-	private int passengerCapacity;
+	protected String regNo;
+	protected String make;
+	protected String model;
+	protected String driverName;
+	protected int passengerCapacity;
 
 	// Tracking bookings
 	private Booking[] currentBookings;
 	private Booking[] pastBookings;
-	private boolean available;
+	protected boolean available;
 	private int bookingSpotAvailable = 0;
 	private double tripFee = 0;
 
 	// Constants
-	private final double STANDARD_BOOKING_FEE = 1.5;
+	protected double STANDARD_BOOKING_FEE = 1.5;
 	private final int MAXIUM_PASSENGER_CAPACITY = 10;
 	private final int MINIMUM_PASSENGER_CAPACITY = 1;
+	private final double RATE = 0.3;
 
 	public Car(String regNo, String make, String model, String driverName, int passengerCapacity)
 	{
@@ -260,7 +261,7 @@ public class Car
 
 		// call complete booking on Booking object
 		// double kilometersTravelled = Math.random()* 100;
-		double fee = kilometers * (STANDARD_BOOKING_FEE * 0.3);
+		double fee = kilometers * (STANDARD_BOOKING_FEE * RATE);
 		tripFee += fee;
 		booking.completeBooking(kilometers, fee, STANDARD_BOOKING_FEE);
 		// add booking to past bookings
@@ -329,7 +330,7 @@ public class Car
 	/*
 	 * A record marker mark the beginning of a record.
 	 */
-	private String getRecordMarker()
+	protected String getRecordMarker()
 	{
 		final int RECORD_MARKER_WIDTH = 60;
 		StringBuilder sb = new StringBuilder();
@@ -344,7 +345,7 @@ public class Car
 	/*
 	 * Checks to see if the number of passengers falls within the accepted range.
 	 */
-	private boolean numberOfPassengersIsValid(int numPassengers)
+	protected boolean numberOfPassengersIsValid(int numPassengers)
 	{
 		if (numPassengers >= MINIMUM_PASSENGER_CAPACITY && numPassengers < MAXIUM_PASSENGER_CAPACITY
 				&& numPassengers <= passengerCapacity)
@@ -366,7 +367,7 @@ public class Car
 	 * Indicates if a booking spot is available. If it is then the index of the
 	 * available spot is assigned to bookingSpotFree.
 	 */
-	private boolean bookingAvailable()
+	protected boolean bookingAvailable()
 	{
 		for (int i = 0; i < currentBookings.length; i++)
 		{
@@ -390,7 +391,7 @@ public class Car
 	/*
 	 * Checks to see if if the car is currently booked on the date specified.
 	 */
-	private boolean notCurrentlyBookedOnDate(DateTime date)
+	protected boolean notCurrentlyBookedOnDate(DateTime date)
 	{
 		boolean foundDate = true;
 		for (int i = 0; i < currentBookings.length; i++)
@@ -438,3 +439,6 @@ public class Car
 		}
 	}
 }
+
+
+
