@@ -2,6 +2,7 @@ package cars;
 
 import java.util.ArrayList;
 
+import exceptions.InvalidBooking;
 import utilities.DateTime;
 import utilities.DateUtilities;
 import utilities.MiRidesUtilities;
@@ -67,7 +68,7 @@ public class Car
 	 * Booking six cars
 	 */
 
-	public boolean book(String firstName, String lastName, DateTime required, int numPassengers)
+	public boolean book(String firstName, String lastName, DateTime required, int numPassengers) throws InvalidBooking
 	{
 		boolean booked = false;
 		// Does car have five bookings
@@ -79,15 +80,32 @@ public class Car
 		boolean validPassengerNumber = numberOfPassengersIsValid(numPassengers);
 
 		// Booking is permissible
-		if (available && dateAvailable && dateValid && validPassengerNumber)
+		if (available == true)
 		{
-			tripFee = STANDARD_BOOKING_FEE;
-			Booking booking = new Booking(firstName, lastName, required, numPassengers, this);
-			currentBookings[bookingSpotAvailable] = booking;
-			bookingSpotAvailable++;
-			booked = true;
+			if (dateAvailable != true)
+			{
+				throw new InvalidBooking("Date is not available");
+			}
+			if (dateValid == true)
+			{
+				throw new InvalidBooking("Date is invalid");
+			}
+			if (validPassengerNumber == true)
+			{
+				throw new InvalidBooking("Invalid number of passenger");
+			}
+
+			{
+				tripFee = STANDARD_BOOKING_FEE;
+				Booking booking = new Booking(firstName, lastName, required, numPassengers, this);
+				currentBookings[bookingSpotAvailable] = booking;
+				bookingSpotAvailable++;
+				booked = true;
+			}
 		}
+
 		return booked;
+
 	}
 
 	/*
@@ -373,11 +391,10 @@ public class Car
 		{
 			if (currentBookings[i] == null)
 			{
-				if(i == currentBookings.length - 1)
+				if (i == currentBookings.length - 1)
 				{
 					available = false;
-				}
-				else
+				} else
 				{
 					available = true;
 				}
@@ -438,7 +455,43 @@ public class Car
 			this.passengerCapacity = -1;
 		}
 	}
+
+	public String getPastBooking()
+	{
+		for (int i = 0; i < pastBookings.length; i++)
+		{
+			if (pastBookings[i] != null)
+			{
+				Booking booking = pastBookings[i];
+				return booking.getDetails();
+			} else
+			{
+				return "";
+			}
+		}
+		return "";
+
+	}
+
+	public String getCurrentBooking()
+	{
+		for (int i = 0; i < currentBookings.length; i++)
+		{
+			if (currentBookings[i] != null)
+			{
+				Booking booking = currentBookings[i];
+				return booking.getDetails();
+			} else
+			{
+				return "";
+			}
+		}
+		return "";
+
+	}
+
+	public boolean getAvailable()
+	{
+		return available;
+	}
 }
-
-
-

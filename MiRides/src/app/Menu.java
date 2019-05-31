@@ -3,6 +3,8 @@ package app;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+import cars.Booking;
+import exceptions.InvalidBooking;
 import utilities.DateTime;
 import utilities.DateUtilities;
 
@@ -28,6 +30,7 @@ public class Menu
 		final int MENU_ITEM_LENGTH = 2;
 		String input;
 		String choice = "";
+
 		do
 		{
 			printMenu();
@@ -53,7 +56,11 @@ public class Menu
 					completeBooking();
 					break;
 				case "DA":
-					System.out.println(application.displayAllBookings());
+					//System.out.println(application.displayAllBookings());
+					preDA();
+					break;
+				case "SA":
+					preSA();
 					break;
 				case "SS":
 					System.out.print("Enter Registration Number: ");
@@ -101,34 +108,36 @@ public class Menu
 
 			System.out.print("Enter number of passengers: ");
 			numPassengers = promptForPassengerNumbers();
-			
+
 			System.out.print("Enter Service Type (SD/SS)");
 			service = console.nextLine();
-			
+
 			if (service == "SS")
 			{
 				System.out.print("Enter Standard Fee: ");
 				fee = console.nextDouble();
-				
+
 				System.out.print("Enter List of Refreshments:");
 				String refreshmentsstring = console.nextLine();
 				StringTokenizer tokenizer = new StringTokenizer(refreshmentsstring, ",");
-				
-				for (int i=0 ; i <= tokenizer.countTokens(); i++ ) {
-		            refreshments[i] = tokenizer.nextToken();
-		        }   
-				
+
+				for (int i = 0; i <= tokenizer.countTokens(); i++)
+				{
+					refreshments[i] = tokenizer.nextToken();
+				}
+
 				boolean result = application.checkIfCarExists(id);
 
 				if (!result)
 				{
-					String carRegistrationNumber = application.createSilverServiceCar(id, make, model, driverName, numPassengers, fee, refreshments);
+					String carRegistrationNumber = application.createSilverServiceCar(id, make, model, driverName,
+							numPassengers, fee, refreshments);
 					System.out.println(carRegistrationNumber);
 				} else
 				{
 					System.out.println("Error - Already exists in the system");
 				}
-				
+
 			}
 
 			boolean result = application.checkIfCarExists(id);
@@ -149,6 +158,9 @@ public class Menu
 	 */
 	private boolean book()
 	{
+		
+		
+		
 		System.out.println("Enter date car required: ");
 		System.out.println("format DD/MM/YYYY)");
 		String dateEntered = console.nextLine();
@@ -156,14 +168,13 @@ public class Menu
 		int month = Integer.parseInt(dateEntered.substring(3, 5));
 		int year = Integer.parseInt(dateEntered.substring(6));
 		DateTime dateRequired = new DateTime(day, month, year);
-		
-		if(!DateUtilities.dateIsNotInPast(dateRequired) || !DateUtilities.dateIsNotMoreThan7Days(dateRequired))
+
+		if (!DateUtilities.dateIsNotInPast(dateRequired) || !DateUtilities.dateIsNotMoreThan7Days(dateRequired))
 		{
 			System.out.println("Date is invalid, must be within the coming week.");
 			return false;
 		}
-		
-		
+
 		String[] availableCars = application.book(dateRequired);
 		for (int i = 0; i < availableCars.length; i++)
 		{
@@ -173,7 +184,7 @@ public class Menu
 		{
 			System.out.println("Please enter a number from the list:");
 			int itemSelected = Integer.parseInt(console.nextLine());
-			
+
 			String regNo = availableCars[itemSelected - 1];
 			regNo = regNo.substring(regNo.length() - 6);
 			System.out.println("Please enter your first name:");
@@ -183,15 +194,19 @@ public class Menu
 			System.out.println("Please enter the number of passengers:");
 			int numPassengers = Integer.parseInt(console.nextLine());
 			String result = application.book(firstName, lastName, dateRequired, numPassengers, regNo);
-
 			System.out.println(result);
-		} else
+			
+			
+			
+		} 
+		
+		else
 		{
 			System.out.println("There are no available cars on this date.");
 		}
 		return true;
 	}
-	
+
 	/*
 	 * Complete bookings found by either registration number or booking date.
 	 */
@@ -199,7 +214,7 @@ public class Menu
 	{
 		System.out.print("Enter Registration or Booking Date:");
 		String response = console.nextLine();
-		
+
 		String result;
 		// User entered a booking date
 		if (response.contains("/"))
@@ -218,26 +233,25 @@ public class Menu
 			System.out.println(result);
 		} else
 		{
-			
+
 			System.out.print("Enter First Name:");
 			String firstName = console.nextLine();
 			System.out.print("Enter Last Name:");
 			String lastName = console.nextLine();
-			if(application.getBookingByName(firstName, lastName, response))
+			if (application.getBookingByName(firstName, lastName, response))
 			{
 				System.out.print("Enter kilometers:");
 				double kilometers = Double.parseDouble(console.nextLine());
 				result = application.completeBooking(firstName, lastName, response, kilometers);
 				System.out.println(result);
-			}
-			else
+			} else
 			{
 				System.out.println("Error: Booking not found.");
 			}
 		}
-		
+
 	}
-	
+
 	private int promptForPassengerNumbers()
 	{
 		int numPassengers = 0;
@@ -246,8 +260,7 @@ public class Menu
 		if (!testingWithValidation)
 		{
 			return Integer.parseInt(console.nextLine());
-		} 
-		else
+		} else
 		{
 			while (!validPassengerNumbers)
 			{
@@ -281,14 +294,13 @@ public class Menu
 		if (!testingWithValidation)
 		{
 			return console.nextLine();
-		} 
-		else
+		} else
 		{
 			while (!validRegistrationNumber)
 			{
 				regNo = console.nextLine();
 				boolean exists = application.checkIfCarExists(regNo);
-				if(exists)
+				if (exists)
 				{
 					// Empty string means the menu will not try to process
 					// the registration number
@@ -333,4 +345,54 @@ public class Menu
 		System.out.println("\nEnter your selection: ");
 		System.out.println("(Hit enter to cancel any operation)");
 	}
+
+	private void preSA()
+	{
+		String entertype;
+		String stringdate;
+		DateTime required = null;
+
+		System.out.println("Enter Type (SD/SS)");
+		entertype = console.nextLine();
+
+		
+//exceptions needed here		
+		System.out.println("Date:");
+		stringdate = console.nextLine();
+		
+		String datestring = stringdate;
+
+		datestring.replace("/", "");
+		int ds1 = Integer.parseInt(datestring.substring(0, 2));
+		int ds2 = Integer.parseInt(datestring.substring(3, 5));
+		int ds3 = Integer.parseInt(datestring.substring(6, 10));
+
+		required = new DateTime(ds1, ds2, ds3);
+		
+		application.SA(entertype, required);
+		
+		
+	}
+	
+	private void preDA() {
+		String entertype;
+		String sort;
+		
+		System.out.println("Enter Type (SD/SS):");
+		entertype = console.nextLine();
+		
+		System.out.println("Enter Sort Order (A/D): ");
+		sort = console.nextLine();
+		
+		
+		application.carsort(entertype, sort);
+		System.out.println("sort done");
+		if(entertype.equals("SD")) {
+			System.out.println(application.displayAllBookings());
+		}
+		else if(entertype == "SS") {
+			System.out.println(application.displaySilverServiceBookings());
+		}
+	}
+	
 }
