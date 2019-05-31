@@ -236,7 +236,7 @@ public class MiRideApplication
 			honda.book("Craig", "Cocker", new DateTime(1), 3);
 		} catch (InvalidBooking e5)
 		{
-			// TODO Auto-generated catch block
+
 			e5.printStackTrace();
 		}
 		itemCount++;
@@ -248,7 +248,7 @@ public class MiRideApplication
 			lexus.book("Craig", "Cocker", new DateTime(1), 3);
 		} catch (InvalidBooking e4)
 		{
-			// TODO Auto-generated catch block
+
 			e4.printStackTrace();
 		}
 		itemCount++;
@@ -262,7 +262,7 @@ public class MiRideApplication
 			bmw.book("Craig", "Cocker", new DateTime(1), 3);
 		} catch (InvalidBooking e3)
 		{
-			// TODO Auto-generated catch block
+
 			e3.printStackTrace();
 		}
 
@@ -274,7 +274,7 @@ public class MiRideApplication
 			audi.book("Rodney", "Cocker", new DateTime(1), 4);
 		} catch (InvalidBooking e2)
 		{
-			// TODO Auto-generated catch block
+
 			e2.printStackTrace();
 		}
 
@@ -293,10 +293,9 @@ public class MiRideApplication
 			toyota.book("Paul", "Scarlett", new DateTime(7), 7);
 		} catch (InvalidBooking e1)
 		{
-			// TODO Auto-generated catch block
+
 			e1.printStackTrace();
 		}
-		
 
 		// 1 car booked five times (not available)
 		Car rover = new Car("ROV465", "Honda", "Rover", "Jonathon Ryss Meyers", 7);
@@ -307,29 +306,34 @@ public class MiRideApplication
 			rover.book("Rodney", "Cocker", new DateTime(1), 3);
 		} catch (InvalidBooking e)
 		{
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
-		// rover.completeBooking("Rodney", "Cocker", 75);
+
 		DateTime inTwoDays = new DateTime(2);
 		try
 		{
 			rover.book("Rodney", "Cocker", inTwoDays, 3);
 		} catch (InvalidBooking e)
 		{
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		rover.completeBooking("Rodney", "Cocker", inTwoDays, 75);
-		
 
 		// Two silver service cars that HAVE NOT been booked
-		String[] refreshmentA = {"Rice","Tea","Soy sauce"};
-		Car bugatti = new SilverService("BUG782", "Bugatti", "E3", "High Roller", 3,3.5, refreshmentA);	
-		silverService[silverserviceItemCount] = bugatti;
+		String[] refreshment1 = { "Pearl Milk Tea", "Fruit Tea", "Passionfruit Mango Tea" };
+		Car geely = new SilverService("CHI888", "Geely", "Boeyue", "China Boy", 3, 3.5, refreshment1);
+		silverService[silverserviceItemCount] = geely;
 		silverserviceItemCount++;
 
+		String[] refreshment2 = { "Pulled Milk Tea", "Iced Lime Tea", "Rose Milk Tea" };
+		Car proton = new SilverService("WAW202", "Proton", "X70", "Mohamad Mamak", 3, 5, refreshment2);
+		silverService[silverserviceItemCount] = proton;
+		silverserviceItemCount++;
 		
+		//Two silver service cars that HAVE BEEN been booked, but the bookings have not been completed
+
 		return true;
 	}
 
